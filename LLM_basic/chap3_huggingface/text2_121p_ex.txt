@@ -1,0 +1,12 @@
+걍 내가 학습한 모델이 허깅페이스의 from pretrained로 가져온 모델이면 push_to_hub쓰면 올라감
+model.config.어쩌고 = 저쩌고 하면
+config['어쩌고'] = 저쩌고로 저장해서 들어감
+
+로그인은 from huggingface_hub import login
+login(token='내 아이디 토큰')
+repo_id = f"본인의 아이디 입력/roberta-base-klue-ynat-classification"
+model.push_to_hub(repo_id)
+
+로컬 파일 날리려면
+~/.cache/huggingface
+여길 싹 날려라

@@ -1,0 +1,83 @@
+sLLM은 작고 특정 도메인에 특화, 비용 효율적
+실습 내용은 자연어 요청에서SQL문 생성하는 sLLM
+
+실습 내용 요약
+데이터셋 확인
+->영어, 한국어 데이터셋과 합성 데이터셋 확인
+->파이프라인제작
+->평가(GPT사용)
+->준비한 학습 데이터로 미세 조정하고 여러 바리에이션
+
+207p
+라이브러리
+bitsandbytes는 양자화 관련 라이브러리
+tiktoken은 OpenAI에서 제공하는 토큰 관리 라이브러리
+autotrain-advanced는 빠르고 쉬운 머신러닝 모델 학습 및 배포 라이브러리
+
+설치내역은 다음과 같음
+Successfully installed Mako-1.3.9 Pillow-11.0.0 accelerate-1.2.1 albucore-0.0.21 albumentations-1.4.23 alembic-1.14.1 authlib-1.4.0 autotrain-advanced-0.8.36 bitsandbytes-0.45.0 brotli-1.1.0 cachetools-5.5.2 colorlog-6.9.0 cryptography-44.0.0 eval-type-backport-0.2.2 evaluate-0.4.3 fastapi-0.115.6 greenlet-3.1.1 hf-transfer-0.1.9 httpx-0.28.1 huggingface-hub-0.27.0 inflate64-1.0.1 ipadic-1.0.0 jiwer-3.0.5 joblib-1.4.2 loguru-0.7.3 multivolumefile-0.2.3 nltk-3.9.1 numpy-1.26.4 nvidia-ml-py-12.535.161 nvitop-1.3.2 opencv-python-headless-4.11.0.86 optuna-4.1.0 packaging-24.2 pandas-2.2.3 peft-0.14.0 py7zr-0.22.0 pybcj-1.0.3 pycocotools-2.0.8 pydantic-2.10.4 pydantic-core-2.27.2 pyngrok-7.2.1 pyppmd-1.1.1 python-multipart-0.0.20 pyyaml-6.0.2 pyzstd-0.16.2 rapidfuzz-3.12.1 safetensors-0.5.2 scikit-learn-1.6.0 sentence-transformers-3.3.1 sentencepiece-0.2.0 seqeval-1.2.2 simsimd-6.2.1 sqlalchemy-2.0.38 starlette-0.41.3 stringzilla-3.12.0 termcolor-2.5.0 texttable-1.7.0 tiktoken-0.8.0 timm-1.0.12 tokenizers-0.21.0 torchmetrics-1.6.0 transformers-4.48.0 trl-0.13.0 typing_extensions-4.12.2 uvicorn-0.34.0 werkzeug-3.1.3 xgboost-2.1.3
+이를 위해 pytorch lightning을 날렸으며, 그 외에 상당한 dependency 문제가 생겼었음!!
+
+207p
+{   SQL 지시 데이터셋을 얻는 과정
+    요약: 실습에서는 gpt로 만들어낸 데이터셋을(=합성 데이터셋) 쓸 것
+
+    영어 데이터셋
+    Text2SQL에 사용되는 데이터셋은 'WikiSQL'과 'Spider'가 있다고함
+    데이터셋의 내용은 DB 정보(테이블과 컬럼) / 요청사항 / 정답 SQL
+    WikiSQL은 단일 테이블에 간단한 sql, Spider는 다중 테이블에 좀 더 복잡한 sql, 둘 다 영어
+    WikiSQL은 보면 JSON에 가까운 dict형식이다
+
+    한국어 데이터셋
+    AI 허브에서 구축한 NL2SQL 검색 색성 데이터
+    2023년 기준으로는 제작중이라고함
+
+    합성 데이터는?
+    간단히 말해서, 위 한국어 데이터가 미완성이라 GPT로 만들어낸거
+    딴거랑 같은데 db_id는 도메인 즉 분야를 의미한다
+    예시는 분야가 게임인/DB와/요청과/정답을 데이터셋 예시로 보여준다
+    45,000개를 생성해서 간단히 검수하고 38,000개로 줄였다고함
+    huggingface의 shangrilar의 ko_text2sql
+}
+
+210p
+{   성능 평가 파이프라인 준비
+    요약: 실습에서는 GPT를 쓴다
+    요약2: 다른거 할 때는 평가 방식을 미리 만들어 놓자
+
+    평가 방식에 관하여
+    {
+        EM(Exact Match)과 EX(Execution Accuracy)
+        각각 문자열이 같은지, 정답과 일치하는지 판별하는 방식인데
+        EM은 같은 결과물을 여러 쿼리로 만들 수 있는데 하나만 정답으로 인정하므로 문제가 있음
+        실습 때는 둘 다 안쓰고 GPT 쓴다
+        LLM으로 다른 LLM을 평가하는 방법 상세는 13장에서???!!!
+    }
+
+    여기서부터 실제 코드
+    {   그래서 GPT로는 어떻게 평가할건데?
+        평가 데이터셋 / (LLM이 SQL을 생성할 때 사용할) 프롬프트 / 평가용 GPT-4 API
+        이게 필요함
+
+        212p
+        평가 데이터는(이거 일반적인 인공지능의 test dataset 얘기하는것같음)
+        실습에서 평가 데이터셋은 합성 데이터 셋의 8개 도메인 중에 좀 특이한 게임 도메인을 평가 대상으로 하는가봄
+        그 중 112개를 채택한듯
+
+        프롬프트는 make_prompt라는 함수로 원래 데이터를 끼워넣어 프롬프트를 만드는듯
+        데이터는 DDL, 사용자 질문, 정답 SQL을 모두 포함함
+        (학습할 때는 생성 input 자리에 빈 입력을 넣고 생성한걸 정답 SQL과 비교해서 역전파하는듯하다)
+        (자세한건 디코더 아키텍쳐를 보면서 알아보자)
+        정답 SQL이 있는건 학습에 사용하는 형태, 정답 SQL이 비어있는건 SQL 생성에 사용한다고 함
+
+        214p
+        평가를 수행할 때 사용할 프롬프트와 코드는 make_requests_for_gpt_evaluation 함수로 처리하는듯함
+        sLLM이 생성한 SQL과 정답 SQL과, yes or no로 반환하도록 써준 프롬프트를 JSON의 형식으로
+        GPT-4 API에다 보내주는 과정이다.
+        사용할 모델과, 요청 경로와, 응답을 저장할 경로를, JSONL파일 형태로 저장한다
+        ※ JSONL은 여러 JSON을 한 줄씩(L, line) 담아 처리할 수 있도록 저장해둔 파일이다
+
+        216p는 url, 경로, 비동기, api key, 요청 제한에 관한 명세와 설정등에 관한 코드이다
+        217p는 결과 jsonl 파일을 csv로 반환하는 함수다
+    }
+}
