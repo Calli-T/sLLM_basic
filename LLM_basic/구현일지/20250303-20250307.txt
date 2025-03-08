@@ -1,0 +1,59 @@
+https://github.com/agrocylo/bitsandbytes-rocm
+이걸 활용해서 bitsandbytes를 rocm에서 돌려보자
+
+triton과는 무슨 관계인가?
+
+https://github.com/ROCm/bitsandbytes
+빌드를 따로해야하는것같은데 아무래도
+https://github.com/huggingface/autotrain-advanced/issues/735
+
+https://huggingface.co/docs/optimum/amd/amdgpu/overview
+
+===
+pip install autotrain-advanced==0.8.10는 bitsandbytes 0.43.3버전을 쓴다!
+rocm fork 버전이 0.43.3dev0 이므로 어떻게든 둘을 연결하기만 하면된다
+
+----- 2025 0305 -----
+{
+    git clone --recurse https://github.com/ROCm/bitsandbytes
+    cd bitsandbytes
+    git checkout rocm_enabled_multi_backend
+    pip install -r requirements-dev.txt
+    cmake -DCOMPUTE_BACKEND=hip -DBNB_ROCM_ARCH="gfx1030" -DCMAKE_PREFIX_PATH=/opt/rocm-6.3.4 -S .
+    make
+    pip install .
+
+    git clone --recurse https://github.com/ROCm/bitsandbytes
+    cd bitsandbytes
+    git checkout rocm_enabled_multi_backend
+    pip install -r requirements-dev.txt
+    cmake -DCOMPUTE_BACKEND=hip -S . #Use -DBNB_ROCM_ARCH="gfx90a;gfx942" to target specific gpu arch
+    make
+    pip install .
+}
+
+----- 0307 -----
+분명히 6700XT로 llama 3.1를 돌린 사례가 존재한다 !!!!!
+https://www.youtube.com/watch?v=h34vA2bkbtk
+https://www.youtube.com/watch?v=H_cqBjDVinw
+
+딥시크도 존재한다
+https://www.youtube.com/watch?v=E11pvsmJYk0
+이 둘을 기반으로 하고 책의 내용은 그냥 씹어야할 것같음
+
+{   양자화를 bitsandbytes를 쓰지 않고 하는 방법도 있는것 같다
+    from transformers import AutoModelForSequenceClassification, AutoTokenizer
+    from optimum.intel import IncQuantizer
+
+    # 모델과 토크나이저 불러오기
+    model_name = "bert-base-uncased"
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    # 양자화 설정 (INT8)
+    quantizer = IncQuantizer(model)
+    quantizer.quantize()
+
+    # 양자화된 모델 사용
+    quantized_model = quantizer.model
+}

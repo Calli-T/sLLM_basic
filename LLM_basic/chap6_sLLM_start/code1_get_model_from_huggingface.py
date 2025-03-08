@@ -1,19 +1,11 @@
 import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 
-
-print(torch.cuda.is_available())
-print(torch.version.cuda)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 def make_inference_pipeline(model_id):
-    tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir='./model_path')
-    model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", load_in_4bit=True,
-                                                 bnb_4bit_compute_dtype=torch.float16,
-                                                 cache_dir='./model_path').to(device)
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
-    return pipe
-
+  tokenizer = AutoTokenizer.from_pretrained(model_id)
+  model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16, )
+  pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+  return pipe
 
 model_id = 'beomi/Yi-Ko-6B'
 hf_pipe = make_inference_pipeline(model_id)
@@ -37,7 +29,7 @@ CREATE TABLE players (
 """
 
 hf_pipe(example, do_sample=False,
-        return_full_text=False, max_length=512, truncation=True)
+    return_full_text=False, max_length=512, truncation=True)
 #  SELECT COUNT(*) FROM players WHERE username LIKE '%admin%';
 
 # ### SQL 봇:
