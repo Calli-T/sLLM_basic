@@ -1,0 +1,41 @@
+https://www.youtube.com/watch?v=h34vA2bkbtk
+https://www.youtube.com/watch?v=H_cqBjDVinw
+따라해봅시다
+
+ollama run llama3.1:8b를 터미널에 치라고?
+sudo snap install ollama <- 이거 먼저 치고 하면된다
+
+pip install ollama로도 가능
+파이토치랑 호환 안됨주의
+그러나 변형하여 미세조정 한 다음 다시 변환해서 가져가기 가능
+
+ollama는 단순히 사전학습된 녀석만 구동가능
+대신 rocm 6.1+ 버전이 있으면 알아서 돌아간다
+
+https://ollama.com/
+사이트는 이쪽
+
+----- 요약 -----
+구동 자체는
+sudo snap install ollama
+ollama run 모델명으로 가능
+
+그러나 멀티모달 x
+사전학습된 모델만 구동가능
+구동에 rocm 6.1+이상
+모델 정보는 https://ollama.com/이쪽에서
+
+----- 다음 과제는 -----
+1. pip를 사용하여 파이썬 패키지 버전의 ollama를 써보자
+
+2. fast-api를 써보자
+
+3. RAG를 써보자
+https://velog.io/@judy_choi/LLaMA3-%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-RAG-%EA%B5%AC%EC%B6%95-Ollama-%EC%82%AC%EC%9A%A9%EB%B2%95-%EC%A0%95%EB%A6%AC
+이걸 써보자
+https://velog.io/@woody_ahn/Llama-3.1%EB%A1%9C-%EB%A1%9C%EC%BB%AC%ED%99%98%EA%B2%BD-RAG-%EA%B5%AC%ED%98%84
+아님 이걸 써보자
+
+4. lora나 qlora를 써보자
+
+5. 미세조정을 해보자!

@@ -1,0 +1,45 @@
+로라 지도 미세 조정을 해보자
+
+{   사전 지식
+    기법에 관하여
+    1. 모델의 사전 지식이 충분하면 lora로도 충분하나, 아니면 전체 파라미터의 미세조정이 필요하다
+
+    성능과 모델에 관하여
+    1. llama 계열 한국어 모델 성능이 뛰어난건 bllossom
+    2. 한국어 sLLM 벤치마크는 LogicKor에서, 그러나 2024-07까지의 기록만 있다
+    https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard#/?search=korean 이건 허깅페이스 벤치
+    https://huggingface.co/MLP-KTLim/llama-3-Korean-Bllossom-8B 블로썸
+
+    LoRA에 관하여
+    1. QLoRA는 원본 모델은 양자화 한채로 추론하는 LoRA임
+    2. 로라는 주로 Q,V 프로젝션 레이어에 추가됨
+    3. 로라를 통과한 값은 Q, V 선형 레이어를 통과한 값에 더해짐
+    4. 로라는 원본 Q, V proj와 크기가 같지 않으나,
+    저차원 투영/ 고차원 복원 두 단계를 거치므로
+    이를 통과한 행렬은 원본 QK를 통과한 행렬의 크기와 같음
+
+    Autotrain과 LoRA에 관하여
+    1. Autotrain에서, --use-peft옵션을 사용하면 LoRA를 포함한 PEFT 기술을 활성화한다.
+    lora-r, lora-alpha, lora-dropout옵션이 lora 관련 옵션
+    2. (허깅페이스에서) 이를 원본 모델과 합치려면 peft 모델이 필요함
+
+    관련 라이브러리에 관하여
+    1. Autotrain을 사용하지 않으려면 Trainer 라이브러리도 있고, 아니면 그냥해도된다
+    2. 이 때 옵션은 TrainingArguments 라이브러리쓰며, 명시적으로도 가능하나 json으로도 작성이 가능하다.
+
+    입력에 관하여
+    1. 학습 데이터는 instruction 지시/input 입력된 자료/output 정답으로 나뉜다
+}
+
+{   할일
+    1. 뭘 만들건지 정하자
+    2. 어디서 데이터를 가져올 건지 찾아보자
+    3. 모델과 입력 형식을 알아보자
+}
+
+고객 응대 QNA 자료를 싹 모아서 미세 조정을 하자
+블라썸 8B를 쓰자
+그런다음 원하는 자료로 LoRA
+
+----- 0314 -----
+블라썸 양자화 하니까 의외로 헛소리만 하는데?
