@@ -16,3 +16,6 @@ BitsAndBytes, GPTQ, AWQ의 방식이 자주 사용되는데 이걸 알아봄
 
 ---
 사용하는 라이브러리는 231p에 있음
+gptq, autoawq, optinum을 추가로 설치
+
+autoawq는 0.2.5버전으로 설치,

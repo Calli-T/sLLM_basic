@@ -12,6 +12,8 @@ arrow==1.3.0
 async-timeout==5.0.1
 attrs==25.1.0
 Authlib==1.3.0
+autoawq==0.2.5
+autoawq_kernels==0.0.9
 autotrain-advanced==0.8.10
 bitsandbytes @ file:///mnt/additional/projects/sLLM/bitsandbytes
 Brotli==1.1.0
@@ -162,6 +164,7 @@ torchmetrics==1.4.0
 torchvision==0.22.0.dev20250306+rocm6.3
 tqdm==4.66.4
 transformers==4.44.0
+triton==3.2.0
 trl==0.9.6
 typeguard==4.4.2
 typer==0.15.2
@@ -180,3 +183,4 @@ xgboost==2.0.3
 xxhash==3.5.0
 yarl==1.18.3
 zipp==3.21.0
+zstandard==0.23.0
