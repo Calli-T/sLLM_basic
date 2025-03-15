@@ -16,6 +16,17 @@ BitsAndBytes, GPTQ, AWQ의 방식이 자주 사용되는데 이걸 알아봄
 
 ---
 사용하는 라이브러리는 231p에 있음
-gptq, autoawq, optinum을 추가로 설치
+gptq, autoawq, optimum을 추가로 설치
 
 autoawq는 0.2.5버전으로 설치,
+https://huggingface.co/docs/transformers/ko/quantization/awq
+amd 일부 지원
+
+optimum은 amd 전용으로 존재함
+https://pypi.org/project/optimum-amd/
+그리고 다음과 같은 명령으로 설치(bitsandbytes와 유사한 방식)
+git clone https://github.com/huggingface/optimum-amd.git
+cd optimum-amd
+pip install -e .
+
+gptq는 auto-gptq로 대체, (gpt피셜)  rocm호환성이 입증되었다고 함
