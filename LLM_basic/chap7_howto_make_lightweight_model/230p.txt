@@ -30,3 +30,8 @@ cd optimum-amd
 pip install -e .
 
 gptq는 auto-gptq로 대체, (gpt피셜)  rocm호환성이 입증되었다고 함
+auto-gptq는 export ROCM_VERSION=6.3.3을 박아줘야 설치가 된다
+-> 실패함
+pip install auto-gptq --no-build-isolation --extra-index-url https://huggingface.github.io/autogptq-index/whl/rocm573/
+일단 설치 자체는 성공함
+0.7.1+rocm5.7.3 버전이 설치됨

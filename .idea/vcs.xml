@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/AutoGPTQ" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/bitsandbytes" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/optimum-amd" vcs="Git" />
   </component>
