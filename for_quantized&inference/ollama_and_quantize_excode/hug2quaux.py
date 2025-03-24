@@ -17,14 +17,14 @@ bnb_config = BitsAndBytesConfig(
 # VRAM의 한계를 넘기 위해 init_empty_weights 사용
 with init_empty_weights():
     model = AutoModelForCausalLM.from_pretrained(
-        "MLP-KTLim/llama-3-Korean-Bllossom-8B",  # 모델 이름 또는 허깅페이스 허브 경로
+        "VIRNECT/llama-3-Korean-8B-V3",  # 모델 이름 또는 허깅페이스 허브 경로
         quantization_config=bnb_config,
         cache_dir=cache_dir  # cache_dir 인자 사용
     )
 
 # 토크나이저 로드
 tokenizer = AutoTokenizer.from_pretrained(
-    "MLP-KTLim/llama-3-Korean-Bllossom-8B",
+    "VIRNECT/llama-3-Korean-8B-V3",
     cache_dir=cache_dir  # 캐시 경로 동일하게 설정
 )
 

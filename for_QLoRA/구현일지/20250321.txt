@@ -1,0 +1,38 @@
+일단 모델 양자화부터 시작
+{   AWQ 양자화 코드
+    !pip install transformers accelerate autoawq
+
+    from awq import AutoAWQForCausalLM
+    from transformers import AutoTokenizer
+    import torch
+
+
+    # 모델과 토크나이저 로드
+    model_name = "VIRNECT/llama-3-Korean-8B-V3"  # 사용하고자 하는 모델 이름
+    model = AutoAWQForCausalLM.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    # 양자화
+    model.quantize(tokenizer, quant_config={"zero_point": True, "q_group_size": 128, "w_bit": 4, "version": "GEMM"})
+
+    # 저장
+    model.save_quantized("/content/drive/MyDrive/Untitled Folder")
+    tokenizer.save_pretrained("/content/drive/MyDrive/Untitled Folder")
+}
+이 코드를 코랩에서 돌리자
+이거 다하면 프롬프트를 제작하자
+잘 안돌아가는데, bitsandbytes는 일단 돌려놨고(llama3 기반 bllossom기반 Virnect 한국어 8B모델, 경로는 for_quantized../아래에), autogptq나 awq는 잘될지 안될지 모르겠다
+일단 awq가 어째서인지 끝날 무렵에 램부족으로 문제가 생긴다
+
+요약 데이터셋은 /mnt/additional/dataset위에 올라가 있다
+
+----- 0322 -----
+양자화 한 모델은 3번째 구글 계정에 올려뒀다
+데이터셋도 올리는 중
+/ProjectSummerizer 아래에 존재한다
+
+할일
+1. 양자화 된 모델 돌아가는지 확인하기
+2. 데이터셋 autotrain의 형식에 맞춰 작업하기
+3. autotrain 돌리기
+4. 작업 기록 ipynb파일 가져와서 기록으로 남기기

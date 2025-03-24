@@ -1,0 +1,51 @@
+오늘 할 일
+요약 데이터셋 autotrain의 형식에 맞추기
+
+https://realsalmon.tistory.com/49
+
+--
+{   고뇌의 흔적
+    여기서 우리는 알파카형식을 사용
+    알파카형식은 instruction, input, output이 존재함
+    고정된 명령, 원글, 요약문으로 제작
+
+    왜인지는 모르겠는데, virnect모델은 일반적인 개념의 instruction과 input이 바뀌어있다
+    이를 서로 바꾸어서 잘 동작하는지 보고, 주어진 데이터셋을 저 셋으로 구분해서 요약해보자
+
+    일단 virnect는 메시지를 system과 user의 두 role로 나누는데, 이게 뭐지?
+
+    llama qlora 예시
+    https://velog.io/@judy_choi/LLaMA3-Korquard-Fine-Tuning
+
+    system/user/assistant가 llama의 구조인듯한데, 좀 다시 찾아보자
+    -> https://jjaegii.tistory.com/35 여기에서 알 수 있을것같은데?
+}
+
+---
+결론적으로, 우리가 질문할 때는 apply_chat_template을 쓰고,
+autotrain으로 학습할 때는 llama3의 데이터 포맷인 system user assistant를 쓰면된다
+
+다음은 json파일 예시
+[
+    {
+        "messages": [
+            {"role": "system", "content": "당신은 친절한 챗봇입니다. 질문에 대한 답을 정확히 제공합니다."},
+            {"role": "user", "content": "퀵소트 정렬 알고리즘을 설명해줘."},
+            {"role": "assistant", "content": "퀵소트는 분할 정복 알고리즘의 한 종류로, 기준 원소(pivot)를 설정한 후 작은 값과 큰 값을 기준으로 정렬하여 재귀적으로 정렬하는 방법입니다."}
+        ]
+    },
+    {
+        "messages": [
+            {"role": "system", "content": "다음을 요약하세요."},
+            {"role": "user", "content": "퀵소트는 기준 원소를 설정하여 정렬하는 알고리즘입니다."},
+            {"role": "assistant", "content": "퀵소트는 기준 원소를 설정해 정렬하는 알고리즘."}
+        ]
+    }
+]
+
+https://huggingface.co/docs/autotrain/en/tasks/llm_finetuning
+드디어 공식 문서를 찾았는데, 이게 잘맞는것같다
+근데 공식문서에서는 jsonl 파일에, 각 라인에 대괄호를 박아놨는데 이게 뭐지?
+
+일단 train.json과 train.jsonl로 link/dataset 경로로 저장해뒀다
++ 그리고 양자화한건 drive에 올려놓고 지웠음
