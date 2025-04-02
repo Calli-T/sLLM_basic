@@ -1,0 +1,143 @@
+다음은 코랩서 돌린 autotrain-advanced의 명령어다
+[base_model = '/content/drive/MyDrive/ProjectSummarizer/quantized_model'
+finetuned_model = 'qlora-finetuned'
+data_path = '/content/drive/MyDrive/ProjectSummarizer/dataset/'
+checkpoint_path = "/content/drive/MyDrive/ProjectSummarizer/checkpoints"
+
+!autotrain llm \
+--train \
+--model {base_model} \
+--project-name {finetuned_model} \
+--text-column "messages" \
+--data-path {data_path} \
+--lr 2e-4 \
+--batch-size 2 \
+--epochs 1 \
+--block-size 1024 \
+--warmup-ratio 0.1 \
+--lora-r 16 \
+--lora-alpha 32 \
+--lora-dropout 0.05 \
+--weight-decay 0.01 \
+--gradient-accumulation 8 \
+--mixed-precision fp16 \
+--peft \
+--quantization int4 \
+--trainer sft \
+--save-total-limit 3]
+
+다음은 autotrain에 먹인 llama3용 데이터셋의 포맷이다!
+[
+    {
+        "messages": [
+            {
+                "role": "system",
+                "content": "다음을 요약하세요."
+            },
+            {
+                "role": "user",
+                "content": "조선 전기에 활동했던 관리로서 중종 때 청백리로 널리 알려진 우재 손중돈(1463∼1529)의 옛집이다. 언덕에 자리잡은 건물들의 배치는 사랑채와 안채가 ㅁ자형을 이루는데, 가운데의 마당을 중심으로 남쪽에는 사랑채, 나머지는 안채로 구성된다. 안채의 동북쪽에는 사당을 배치하고, 담으로 양쪽 옆면과 뒷면을 둘러 막아, 집의 앞쪽을 탁 트이게 하여 낮은 지대의 경치를 바라볼 수 있게 하였다. 보통 대문은 행랑채와 연결되지만, 이 집은 특이하게 대문이 사랑채와 연결되어 있다. 사랑채는 남자주인이 생활하면서 손님들을 맞이하는 공간으로, 대문의 왼쪽에 사랑방과 마루가 있다. 마루는 앞면이 트여있는 누마루로 ‘관가정(觀稼亭)’ 이라는 현판이 걸려있다. 대문의 오른쪽에는 온돌방, 부엌, 작은방들을 두었고 그 앞에 ㄷ자로 꺾이는 안채가 있다. 안채는 안주인이 살림을 하는 공간으로, 부엌, 안방, 큰 대청마루, 광으로 구성되어 있으며 사랑채의 사랑방과 연결이 된다. 네모기둥을 세우고 간소한 모습을 하고 있으나, 뒤쪽의 사당과 누마루는 둥근기둥을 세워 조금은 웅장한 느낌이 들게 했다. 사랑방과 누마루 주변으로는 난간을 돌렸고, 지붕은 안채와 사랑채가 한 지붕으로 이어져 있다. 관가정은 조선 중기의 남부지방 주택을 연구하는데 귀중한 자료가 되는 문화재이다."
+            },
+            {
+                "role": "assistant",
+                "content": "손중돈의 옛집은 특이하게 대문이 사랑채와 연결되어 있으며 마루는 앞면이 트여있는 누마루다. 보통 대문은 행랑채와 연결되지만, 이 집은 특이하게 대문이 사랑채와 연결되어 있다. 조선 전기에 활동했던 관리로서 중종 때 청백리로 널리 알려진 우재 손중돈(1463∼1529)의 옛집이다. 마루는 앞면이 트여있는 누마루로 ‘관가정(觀稼亭)’ 이라는 현판이 걸려있다."
+            }
+        ]
+    },
+    {
+        "messages": [
+            {
+                "role": "system",
+                "content": "다음을 요약하세요."
+            },
+            {
+                "role": "user",
+                "content": "장안사에 소장된 연(輦)은 조선후기 사찰에서 제작된 연으로서의 전체적인 골격은 유지하고 있으나 세부 장식물과 조각들이 원위치에서 분리되어 있으며 일부는 결실된 것도 있다. 연의 전체적인 형태는 4개의 손잡이로 이루어진 가마채와 사방에 창호(窓戶)가 있는 사각형의 몸체, 그리고 지붕인 옥개(屋蓋)로 구성되어 있다. 나무로 제작되어있는 가마채와 몸체 바탕에는 붉은 안료로 채색이 되어 있으며, 특히 세부 장식을 위해 갖가지 문양이 조각되어 있거나 별도로 만들어진 장식물이 부착되어 있기도 하다. 몸체 바닥 저부에는 묵서(墨書)로 건륭(乾隆) 25년(1760)에 불광산 장안사 중단 연(佛光山 長安寺 中壇 輦)을 조성한 후에 다시 9월에 개조하였음을 밝히는 조성기(造成記)와 산중질(山中秩)을 적어 놓고 있다. 장안사 연과 유사한 양식의 연으로는 1752년에 제작된 안정사 연(安靜寺 輦, 경상남도 지정 유형문화재 제284호)이 있다. 장안사 연은 묵서명에 의해 1760년이라는 조성연대를 가지고 있으며, 제작 연대가 비교적 오래되었을 뿐 아니라 세부적인 조각 및 장식수법이 뛰어난 조선후기 불교공예의 대표적인 유물이다."
+            },
+            {
+                "role": "assistant",
+                "content": "장안사 소장 연은 전체적인 골격은 유지하고 있으나 세부 장식물과 조각들이 원위치에서 분리되어 있거나 일부 결실된 부분이 보인다. 장안사에 소장된 연(輦)은 조선후기 사찰에서 제작된 연으로서의 전체적인 골격은 유지하고 있으나 세부 장식물과 조각들이 원위치에서 분리되어 있으며 일부는 결실된 것도 있다."
+            }
+        ]
+    },
+    ...(이후 중괄호 한 하나의 예시가 계속 이어짐)
+]
+이거
+
+수정된 명령어, VRAM이...
+[!autotrain llm \
+--train \
+--model {base_model} \
+--project-name {finetuned_model} \
+--text-column "messages" \
+--data-path {data_path} \
+--lr 2e-4 \
+--batch-size 1 \
+--epochs 1 \
+--block-size 1024 \
+--warmup-ratio 0.1 \
+--lora-r 8 \
+--lora-alpha 32 \
+--lora-dropout 0.05 \
+--weight-decay 0.01 \
+--gradient-accumulation 4 \
+--mixed-precision fp16 \
+--peft \
+--quantization int4 \
+--trainer sft \
+--save-total-limit 3]
+
+최종 명령어
+[
+base_model = '/content/drive/MyDrive/ProjectSummarizer/quantized_model'
+finetuned_model = 'qlora-finetuned'
+data_path = '/content/drive/MyDrive/ProjectSummarizer/dataset/'
+checkpoint_path = "/content/drive/MyDrive/ProjectSummarizer/checkpoints"
+
+!autotrain llm \
+--train \
+--model {base_model} \
+--project-name {finetuned_model} \
+--text-column "messages" \
+--data-path {data_path} \
+--lr 2e-4 \
+--batch-size 2 \
+--epochs 1 \
+--block-size 1024 \
+--warmup-ratio 0.1 \
+--lora-r 16 \
+--lora-alpha 32 \
+--lora-dropout 0.05 \
+--weight-decay 0.01 \
+--mixed-precision fp16 \
+--gradient-accumulation 8 \
+--peft \
+--quantization int4 \
+--trainer sft \
+--save-total-limit 1 \
+--logging-steps 500 \
+--eval-strategy steps
+]
+
+트리톤 2.1.0으로 설치하는거 잊지말것 triton.ops는 꽤 야랄맞다
+
+----- 0326 -----
+저장을 언제할지 지정해줘야하는 문제가 있다
+https://huggingface.co/docs/autotrain/main/en/tasks/extractive_qa#local-training -이거 0.8v버전 이상
+https://huggingface.co/docs/autotrain/v0.7.129/en/llm_finetuning_params - 이거 0.8v버전 미만
++ 입력 형식이 이게 맞나? 중간에 text_column, answer_column등 매개 변수를 좀 봐야겠음
+++ pip list 박아보니
+0.8.24이하와 MAIN이 따로있고, 내가 다운 받은 버전은 0.8.36이다 ㅅㅂ ㅋㅋㅋㅋㅋ
+--chat-template옵션을 좀 자세히 살펴 봐야겠는데?
+64초에 1번, 6천번이 넘는다. 이는 2일하고도 16시간이 넘는 시간이다.
+
+27일에 할 일
+1. 일단 눈씻고 찾아봐도 autotrain에서는 step당 저장 기능이 안보인다
+autotrain을 폐기하고 Trainer코드를 짜기 vs 코랩 현질하고 24시간 돌리기(최대 세션이 24시간이다... ㅅㅂ)
+
+2. chat_template을 chatml에 어떻게 맞출것인지 알아보기
+웹에 떠돌아다는 자료 보니까 미묘하게 뭔가 다르더라, 내가 한건 llama가 아니라 zephyr가 먹는 template을 착각한것 같은데...
+
+3.
+3151번 반복, 61초, row는 73431... 이게 뭐지
+이거 잘 줄이면 24시간안에 1epoch될것같은데...
