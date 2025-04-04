@@ -1,0 +1,44 @@
+요약에 썼던거 까지, qlora실습은 ipynb파일로 저장해뒀다
+
+sacred_converter mk2
+데이터셋은 캐글에서!
+https://www.kaggle.com/datasets/rycont/korean-bible-classic-modern-pair?resource=download
+
+이걸 json의 형태로 만들어야한다
+train.json의 형태 참고
+
+[
+    {
+        "messages": [
+            {
+                "role": "system",
+                "content": "다음을 요약하세요."
+            },
+            {
+                "role": "user",
+                "content": "원문1"
+            },
+            {
+                "role": "assistant",
+                "content": "결과1"
+            }
+        ]
+    },
+    {
+        "messages": [
+            {
+                "role": "system",
+                "content": "다음을 요약하세요."
+            },
+            {
+                "role": "user",
+                "content": "원문2"
+            },
+            {
+                "role": "assistant",
+                "content": "결과2"
+            }
+        ]
+    },
+]
+뭐 이런 형태이다
