@@ -2,8 +2,8 @@
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer
 
-klue_mrc_dataset = load_dataset('klue', 'mrc', split='train', cache_dir='./datasets_temp')
-sentence_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS', cache_folder='./model_temp')
+klue_mrc_dataset = load_dataset('klue', 'mrc', split='train', cache_dir='./for_ignore/datasets_temp')
+sentence_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS', cache_folder='./for_ignore/model_temp')
 
 # ----- 1000개 선택하고 임베딩을 변환 -----
 klue_mrc_dataset = klue_mrc_dataset.train_test_split(train_size=1000, shuffle=False)['train']
