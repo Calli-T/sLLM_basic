@@ -16,7 +16,7 @@ auto_gptq==0.7.1+rocm5.7.3
 autoawq==0.2.5
 autoawq_kernels==0.0.9
 autotrain-advanced==0.8.10
-# bitsandbytes @ file:///mnt/additional/projects/sLLM/bitsandbytes
+bitsandbytes @ file:///mnt/additional/projects/sLLM/bitsandbytes
 Brotli==1.1.0
 cachetools==5.5.2
 certifi==2025.1.31
@@ -56,7 +56,7 @@ hf_transfer==0.1.9
 httpcore==1.0.7
 httptools==0.6.4
 httpx==0.27.0
-huggingface-hub==0.23.4
+huggingface-hub==0.26.5
 humanfriendly==10.0
 idna==3.10
 imageio==2.37.0
@@ -95,9 +95,6 @@ onnx==1.17.0
 onnxruntime_extensions==0.14.0
 opencv-python==4.11.0.86
 opencv-python-headless==4.11.0.86
-# optimum==1.24.0
-# Editable install with no version control (optimum-amd==0.2.dev0)
-# -e /mnt/additional/projects/sLLM/optimum-amd
 optuna==3.6.1
 orjson==3.10.15
 packaging==24.0
