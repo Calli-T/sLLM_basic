@@ -16,3 +16,5 @@ index = faiss.IndexFlatL2(embeddings.shape[1])
 # 인덱스에 임베딩 저장하기
 index.add(embeddings)
 
+
+
