@@ -1,0 +1,5 @@
+https://huggingface.co/SEOKDONG/llama3.1_korean_v1.1_sft_by_aidx
+이거 virnect모델보다 '훨씬' 정확도가 높더라
+
+resume_from_checkpoint가 동작을 안하는데
+train의 매개변수로 넣어 보라그러더라(GPU 피셜)
