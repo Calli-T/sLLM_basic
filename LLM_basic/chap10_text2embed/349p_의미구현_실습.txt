@@ -2,3 +2,9 @@
 데이터셋: klue mrc 데이터 train 1000개 선별
 한것: 문장을 임베딩으로 변경 -> 벡터검색 라이브러리 faiss에 등록 -> 검색하고 context 확인
 question으로 검색해서 context를 찾는듯한데... 일단 실제 방식과는 좀 차이가 있는듯함
+여튼 벡터 임베딩 등록 & 검색하는 예시임
+
+352p
+라마 인덱스에서 sentence-transformers 모델 사용가능
+라마 인덱스의 embedding 모델의 기본 세팅은 text-embedding-ada-002, 바꾸고 싶다면 352p의 코드 참조,
+작성도 해놨음
