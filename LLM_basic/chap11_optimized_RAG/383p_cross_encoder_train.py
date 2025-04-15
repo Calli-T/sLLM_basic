@@ -4,15 +4,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 
 def get_cross_encoder():
-    model = CrossEncoder('klue/roberta-small', num_labels=1)
-
-    '''AutoModelForSequenceClassification.from_pretrained('klue/roberta-small',
-                                                       cache_dir='./for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset')
-    AutoTokenizer.from_pretrained('klue/roberta-small', cache_dir='./for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset')
-    model = CrossEncoder(
-        './for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset/models--klue--roberta-small/snapshots/5fe1f0cb3946f0ea1c01e657cd1688771cf47802',
-        num_labels=1)'''
-
+    # 하기전에, 캐시 삭제부터
     import shutil
     import os
 
@@ -25,6 +17,15 @@ def get_cross_encoder():
         print(f"HuggingFace 캐시 삭제 완료: {cache_dir}")
     else:
         print("HuggingFace 캐시 디렉토리가 존재하지 않습니다.")
+
+    '''AutoModelForSequenceClassification.from_pretrained('klue/roberta-small',
+                                                           cache_dir='./for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset')
+        AutoTokenizer.from_pretrained('klue/roberta-small', cache_dir='./for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset')
+        model = CrossEncoder(
+            './for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset/models--klue--roberta-small/snapshots/5fe1f0cb3946f0ea1c01e657cd1688771cf47802',
+            num_labels=1)'''
+
+    model = CrossEncoder('klue/roberta-small', num_labels=1)
 
     return model
 
@@ -139,3 +140,4 @@ fine_tune_cross_encoder(cross_encoder, train_dataset)
 
 # - 학습 후 성능 평가 -
 evaluate(cross_encoder, test_dataset)
+cross_encoder.save('./for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset')

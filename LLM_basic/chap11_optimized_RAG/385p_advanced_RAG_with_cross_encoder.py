@@ -40,7 +40,7 @@ def find_embedding_top_k(query, emb_model, index, k):
     :return: k개의 상위 유사도를 가진 벡터들의 인덱스들(의 list?)
     '''
 
-    embedding = emb_model.encode(query)
+    embedding = emb_model.encode([query])
     distances, indices = index.search(embedding, k)
     return indices
 
@@ -97,7 +97,7 @@ def evaluate_hit_rate_with_rerank(datasets, embedding_model, cross_model, index,
     predictions = []
     for question_idx, question in enumerate(tqdm(datasets['question'])):
         indices = find_embedding_top_k(question, embedding_model, index, bi_k)[0]
-        predictions.append(rerank_top_k(cross_model, question_idx, indices, k=cross_k))
+        predictions.append(rerank_top_k(cross_model, question_idx, indices))#, k=cross_k))
     total_prediction_count = len(predictions)
     hit_count = 0
     questions = datasets['question']
@@ -128,7 +128,7 @@ finetuned_embedding_model = SentenceTransformer('./for_ignore/model_fine_tuned_w
 finetuned_index = make_embedding_index(finetuned_embedding_model, klue_mrc_test['context'])
 print(evaluate_hit_rate(klue_mrc_test, finetuned_embedding_model, finetuned_index, 10))
 
-# - 크로스 인코더와 섞어서 성능 평가, top 30개를 뽑아서 상위 10개를 다시 집어온다 -
+# - 크로스 인코더와 섞어서 성능 평가, 원본의 3배수를 뽑아 3개당 순위 재정렬을 한 1배수 만큼 가져오는 방식 -
 cross_model = CrossEncoder('./for_ignore/model_cross_encoder_fine_tuned_with_mrc_dataset', num_labels=1)
 hit_rate, cosumed_time, predictions = evaluate_hit_rate_with_rerank(klue_mrc_test, finetuned_embedding_model,
                                                                     cross_model, finetuned_index, bi_k=30, cross_k=10)
