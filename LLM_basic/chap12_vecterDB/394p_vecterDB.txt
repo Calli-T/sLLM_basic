@@ -1,0 +1,8 @@
+394p
+서론
+9~11장은 로컬 DB인 faiss사용, 9장의 구현 실습에서 크로마 DB사용
+
+이번 장에서는 벡터 DB의 검색 방법인 KNN과,
+KNN의 느린 속도를 극복한 ANN 검색 방식, 그 중에서도 자주 쓰이는 HNSW(Hierarchical Navigable Small World)알고리즘 배우기
+실습은 전용 벡터 DB인 파인콘 사용,
+실습에서 멀티 모달 검색도 구현가능
