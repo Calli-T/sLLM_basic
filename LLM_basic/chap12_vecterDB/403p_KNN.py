@@ -1,4 +1,13 @@
-'''# ----- 데이터셋 읽기 -----
+'''
+주석친 내용 다 쓸모 없다
+DatasetSIFT1M은 같은 경로 아래의 /data/sift1M/파일명...을 인식한다
+즉, 경로가 이미 지정된 클래스라 거기에 맞춰줘야함
+for_ignore에 넣어서 git에 등록이 안되도록 한다음,
+실행할 때는 빼서 위의 실행파일.py과 같은 장소에 두고
+코드 실행이 끝나면 다시 지우면된다
+'''
+
+# ----- 데이터셋 읽기 -----
 
 import psutil
 
@@ -10,10 +19,10 @@ def get_memory_usage_mb():
 
 
 from faiss.contrib.datasets import DatasetSIFT1M
-import numpy as np
+# import numpy as np
 
 
-# 커스텀 DatasetSIFT1M 클래스 정의
+'''# 커스텀 DatasetSIFT1M 클래스 정의
 class CustomDatasetSIFT1M(DatasetSIFT1M):
     def __init__(self, query_path, database_path, groundtruth_path, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,16 +63,12 @@ class CustomDatasetSIFT1M(DatasetSIFT1M):
             # 첫 번째 4바이트는 벡터 차원(d)
             d = np.fromfile(f, dtype=np.int32, count=1)[0]
             data = np.fromfile(f, dtype=np.int32)
-            return data
+            return data'''
 
 
 def get_dataset():
-    query_path = './for_ignore/data/sift1M/sift_query.fvecs'
-    database_path = './for_ignore/data/sift1M/sift_database.fvecs'
-    groundtruth_path = './for_ignore/data/sift1M/sift_groundtruth.ivecs'
-
-    ds = CustomDatasetSIFT1M(query_path, database_path, groundtruth_path)  # SIFT1M 데이터셋
-
+    # ds = CustomDatasetSIFT1M(query_path, database_path, groundtruth_path)  # SIFT1M 데이터셋
+    ds = DatasetSIFT1M()
     _xq = ds.get_queries()  # 검색용 데이터
     _xb = ds.get_database()  # 저장된 벡터 데이터
     _gt = ds.get_groundtruth()  # 실제 정답 데이터
@@ -102,4 +107,20 @@ for i in range(1, 10, 2):
     print(f"데이터 {(i + 1) * 100000}개:")
     print(
         f"색인: {(end_indexing - start_indexing) * 1000 :.3f} ms ({end_memory - start_memory:.3f} MB) 검색: {(t1 - t0) * 1000 / nq :.3f} ms")
+
+'''
+실행결과
+Queries shape: (10000, 128)
+Database shape: (1000000, 128)
+Groundtruth shape: (10000, 100)
+데이터 200000개:
+색인: 62.067 ms (98.000 MB) 검색: 1.675 ms
+데이터 400000개:
+색인: 131.344 ms (97.590 MB) 검색: 2.964 ms
+데이터 600000개:
+색인: 166.501 ms (97.566 MB) 검색: 4.743 ms
+데이터 800000개:
+색인: 227.176 ms (97.625 MB) 검색: 7.780 ms
+데이터 1000000개:
+색인: 278.951 ms (97.629 MB) 검색: 7.949 ms
 '''
