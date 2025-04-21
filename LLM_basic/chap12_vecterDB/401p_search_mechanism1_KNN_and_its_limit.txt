@@ -30,3 +30,5 @@ sudo mkdir data/sift1M -p
 sudo mv sift/* data/sift1M
 
 다운까지는 성공했는데, 읽어오는 클래스에 뭔가 문제가 있는 모양이니 수정해보자
+
+뭐 경로를 조정해서 잘 됐고,
