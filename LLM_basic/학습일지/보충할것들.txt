@@ -1,0 +1,5 @@
+Cross Entropy부터, 수학과 정보 이론에 나오는 것들
+손실 함수, NLL과 InfoNCE의 수학적 기반에 대해 좀 알아보자
+
+InfoNCE, CLIP 학습에 쓰는 손실 함수에 관하여
+https://nuguziii.github.io/survey/S-006/
