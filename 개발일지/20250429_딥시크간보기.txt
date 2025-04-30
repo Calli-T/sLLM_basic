@@ -1,0 +1,18 @@
+양자화된 모델
+https://t.me/ai_masters_chat/6742
+https://gall.dcinside.com/mgallery/board/view/?id=tsmcsamsungskhynix&no=15101
+이건 R1이고, 4090 + VRAM 100기가가 필요하다고 한다
+
+딥 시크
+https://croz.net/deepseek-v3-0324-heavy-load-benchmark/?utm_source=chatgpt.com
+결론적으로 671B + 14B MTP라고하는데
+※ MTP는 multi-token prediction, 메인 모델과 함께 동작하여, 작은 모델로 빠르게 생성하고 메인이 검증하는 방식
+※ LLM책 280p의 추측 디코딩이 '맞다'
+
+딥시크 V3의 1.78 bit 양자화 버전, H100에서 돌아간다고 한다?
+https://unsloth.ai/blog/deepseek-v3-0324?utm_source=chatgpt.com
+이거 GGUF라서 CPU로도 돌아가는데, 문제는 초당 2토큰 처리하는데
+180 VRAM+RAM이 필요하다고 한다, 최소 요구사항은 60 RAM이나 성능이 박-살 났다고 한다
+
+전체 모델을 메모리에 로드하지 않고 추론을 시행하는 방법이 있다고 한다?
+고속 SSD와 CPU 오프로딩?
