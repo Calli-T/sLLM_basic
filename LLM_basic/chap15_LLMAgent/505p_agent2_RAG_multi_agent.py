@@ -35,6 +35,7 @@ def get_agents(_llm_config):
         }
     )
 
+
     return _assistant, _ragproxyagent
 
 
